@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  producer:
+    build: 
+      context: ./Producer
+      dockerfile: Dockerfile
+    restart: always
+
+    stdin_open: true
+    tty: true
