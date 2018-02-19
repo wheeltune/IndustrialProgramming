@@ -1,11 +1,40 @@
 version: '3.3'
 
 services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=password
+
+  rabbitmq:
+    image: rabbitmq
+    networks:
+      - net
+    ports:
+      - 5672:5672
+
+  consumer:
+   build:
+     context: ./Consumer
+   restart: always
+   stdin_open: true
+   tty: true
+   links:
+     - rabbitmq
+     - postgres
+   networks:
+     - net
+
   producer:
     build: 
       context: ./Producer
-      dockerfile: Dockerfile
     restart: always
-
     stdin_open: true
     tty: true
+    links:
+      - rabbitmq
+    networks:
+      - net
+
+networks:
+  net:
