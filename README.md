@@ -14,6 +14,12 @@
 	#### Task:
 	Написать TODO лист на Django
 
+	#### Run:
+	1. docker-compose up
+
 	#### Admin:
 	- login: root
 	- password: rootroot
+	
+	#### Note:
+	<input type="datetime-local"/> может не работать в некоторых браузерах (Safari)
