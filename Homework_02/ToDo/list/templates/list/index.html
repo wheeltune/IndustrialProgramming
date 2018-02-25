@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<title>ToDo List</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="initial-scale=1" />
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'list/css/styles.css' %}" />
+
+	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+	
+	{% comment %} <script srt="{% static 'list/js/js.js' %}"></script> {% endcomment %}
+	
+	<script src="{% static 'list/js/js.js' %}"></script>
+</head>
+<body>
+	<h1 class="title">Список дел</h1>
+	<hr class="title">
+	<table>
+		<tr>
+			<form method="POST">
+			{% csrf_token %}
+			<td class="checkbox">+</td>
+		{% for field in addForm %}
+			{% comment %} {{ field.errors }} {% endcomment %}
+			<td>{{ field }}</td>
+		{% endfor %}
+			<td class="button"><button class="add" onclick="addItem();">↓</button></td>
+			<input type="submit">
+			</form>
+		</tr>
+		<tr>
+			<td colspan="3"><hr></td>
+		</tr>
+		{% for item in list %}
+		<tr>
+			<td class="checkbox"><input type="checkbox"/></td>
+			<td>{{ item.content }}</td>
+			<td class="deadline">{{ item.deadline }}</td>
+			<td class="button"><button class="remove" onclick="removeItem({{ item.id }});">X</button></td>
+		<tr>
+		{% endfor %}
+	<table>
+</body>
+</html>

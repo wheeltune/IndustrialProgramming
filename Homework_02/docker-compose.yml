@@ -5,9 +5,9 @@ services:
     image: postgres
   web:
     build: ./ToDo
-    command: python3 ./ToDo/manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - ./ToDo:/code
     ports:
       - "8000:8000"
     depends_on:

@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1.title {
+    margin: 20px 40px 10px;
+
+    font-weight: bold;
+    font-size: 3em;
+}
+
+hr.title {
+    width: 100%;
+    margin: 0 0 30px;
+    padding: 0;
+    border: solid 1px lightgray;
+}
+
+table {
+    margin: 15px 80px;
+
+    font-size: 1.3rem;
+
+    list-style: none;
+}
+
+table td.checkbox, table td.button  {
+    padding: 0;
+}
+
+table td {
+    padding: 5px 20px;
+}
+
+table td.deadline {
+    font-size: 0.8rem;
+
+    color: darkgray;
+}
+
+table input[type=text],
+table input[type=datetime-local] {
+    margin: 0;
+    padding: 5px 10px;
+
+    background: white;
+
+    border: solid 1px lightgray;
+    border-radius: 5px;
+}
+
+button {
+    user-select: none;
+    outline: none;
+
+    cursor: pointer;
+}
+
+button.add {
+    height: 35px;
+    width: 35px;
+
+    font-size: 1rem;
+
+    background: skyblue;
+
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+button.remove {
+    height: 25px;
+    width: 25px;
+
+    font-size: 0.6rem;
+
+    background: salmon;
+
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+}

@@ -11,3 +11,9 @@
     1. docker-compose run --rm producer
 
 1. ### Homework_02: 
+	#### Task:
+	Написать TODO лист на Django
+
+	#### Admin:
+	- login: root
+	- password: rootroot
