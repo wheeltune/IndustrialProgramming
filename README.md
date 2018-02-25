@@ -6,7 +6,7 @@
     - Вторая слушает очередь и кладет строчки в базу
     
     #### Run:
-    1. docker-compose up --build composer
+    1. docker-compose up --build consumer
     1. docker-compose build producer
     1. docker-compose run --rm producer
 
