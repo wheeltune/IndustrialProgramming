@@ -3,32 +3,66 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from .models import ToDo
-from .forms import AddFrom
+from .forms import AddFrom, RemoveForm, MarkDoneForm
 
 from dateutil.parser import parse
 
-def index(request):    
-    # if this is a POST request we need to process the form data
+from datetime import datetime
+
+def index(request):   
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        addForm = AddFrom(request.POST)
-        # check whether it's valid:
-        # if addForm.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-        if addForm.is_valid():
-            content = addForm.cleaned_data['content']
-            deadline = addForm.cleaned_data['deadline']
+        add_form = AddFrom(request.POST)
+
+        if add_form.is_valid():
+            content = add_form.cleaned_data['content']
+            deadline = add_form.cleaned_data['deadline']
             ToDo.objects.create(content=content, deadline=deadline)
 
             return HttpResponseRedirect('/')
-
-    # if a GET (or any other method) we'll create a blank form
     else:
-        addForm = AddFrom()
+        add_form = AddFrom()
 
-    list = ToDo.objects.all()
-    context = {'list': list, 'addForm': addForm}
+    lists = []
+    datas = []
+    datas.append(("Активные", ToDo.objects.filter(deadline__gt=datetime.now(), is_done=False).order_by('deadline')))
+    datas.append(("Просроченные", ToDo.objects.filter(deadline__lte=datetime.now(), is_done=False).order_by('deadline')))
+    datas.append(("Завершенные", ToDo.objects.filter(is_done=True).order_by('deadline')))
+
+    for title, data in datas:
+        if len(data) > 0:
+            remove_forms = []
+            mark_done_forms = []
+            for item in data:
+                mark_done_forms.append(MarkDoneForm(initial={'id': item.id, 'is_done': item.is_done}))
+                remove_forms.append(RemoveForm(initial={'id': item.id}))
+            lists.append((title, zip(data, mark_done_forms, remove_forms)))
+
+    context = {'lists': lists, 'addForm': add_form}
 
     return render(request, 'list/index.html', context)
+
+
+def remove(request):
+    if request.method == 'POST':
+        remove_form = RemoveForm(request.POST)
+
+        if remove_form.is_valid():
+            id = remove_form.cleaned_data['id']
+            instance = ToDo.objects.get(id=id)
+            instance.delete()
+    else:
+        remove_form()
+
+    return HttpResponseRedirect('/')
+
+def markDone(request):
+    if request.method == 'POST':
+        mark_done_form = RemoveForm(request.POST)
+
+        if mark_done_form.is_valid():
+            print(mark_done_form.cleaned_data)
+            id = mark_done_form.cleaned_data['id']
+            is_done = request.POST.get('is_done') == 'on'
+            instance = ToDo.objects.filter(id=id).update(is_done=is_done)
+            
+    return HttpResponseRedirect('/')

@@ -82,3 +82,15 @@ button.remove {
     border-radius: 50%;
     overflow: hidden;
 }
+
+table h2 {
+    margin: 0;
+    margin-left: -40px;
+    padding: 0;
+
+    color: lightgray;
+}
+
+/* form.remove input {
+    display: none;
+} */

@@ -11,7 +11,7 @@
 	
 	{% comment %} <script srt="{% static 'list/js/js.js' %}"></script> {% endcomment %}
 	
-	<script src="{% static 'list/js/js.js' %}"></script>
+	{% comment %} <script src="{% static 'list/js/js.js' %}"></script> {% endcomment %}
 </head>
 <body>
 	<h1 class="title">Список дел</h1>
@@ -21,24 +21,44 @@
 			<form method="POST">
 			{% csrf_token %}
 			<td class="checkbox">+</td>
-		{% for field in addForm %}
+			{% for field in addForm %}
 			{% comment %} {{ field.errors }} {% endcomment %}
 			<td>{{ field }}</td>
-		{% endfor %}
+			{% endfor %}
 			<td class="button"><button class="add" onclick="addItem();">↓</button></td>
-			<input type="submit">
+			{% comment %} <input type="submit"> {% endcomment %}
 			</form>
 		</tr>
 		<tr>
-			<td colspan="3"><hr></td>
+			<td colspan="3"><br></td>
 		</tr>
-		{% for item in list %}
+		{% for title, list in lists %}
 		<tr>
-			<td class="checkbox"><input type="checkbox"/></td>
+			<td colspan="3"><h2>{{ title | upper }}</h2></td>
+		</tr>
+		{% for item, mark_done_form, remove_form in list %}
+		<tr>
+			<td class="checkbox">
+				<form action="markDone" method="POST">
+					{% csrf_token %}
+					{% for field in mark_done_form %}
+					{{ field }}
+					{% endfor %}
+				</form>
+			</td>
 			<td>{{ item.content }}</td>
 			<td class="deadline">{{ item.deadline }}</td>
-			<td class="button"><button class="remove" onclick="removeItem({{ item.id }});">X</button></td>
+			<td class="button">
+				<form action="remove" method="POST">
+					{% csrf_token %}
+					{% for field in remove_form %}
+					{{ field }}
+					{% endfor %}
+					<button class="remove">X</button>
+				</form>
+			</td>
 		<tr>
+		{% endfor %}
 		{% endfor %}
 	<table>
 </body>
